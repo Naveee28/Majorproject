@@ -1,0 +1,73 @@
+.heart-animation {
+    position: absolute;
+    top: 90%;
+    left: 100%;
+    width: 38px;
+    height: 30px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .heart-particle {
+    width: 10px;
+    height: 10px;
+    background-color: pink;
+    border-radius: 50%;
+    position: absolute;
+    animation: spread 1s forwards;
+  }
+  
+  @keyframes spread {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--x), var(--y));
+    }
+  }
+  
+  .heart-particle:nth-child(1) {
+    --x: -20px;
+    --y: -20px;
+  }
+  .heart-particle:nth-child(2) {
+    --x: 0;
+    --y: -20px;
+  }
+  .heart-particle:nth-child(3) {
+    --x: 20px;
+    --y: -20px;
+  }
+  .heart-particle:nth-child(4) {
+    --x: -20px;
+    --y: 0;
+  }
+  .heart-particle:nth-child(5) {
+    --x: 20px;
+    --y: 0;
+  }
+  /* .heart-particle:nth-child(6) {
+    --x: -20px;
+    --y: 20px;
+  } */
+  .heart-particle:nth-child(7) {
+    --x: 0;
+    --y: 20px;
+  }
+  /* .heart-particle:nth-child(8) {
+    --x: 20px;
+    --y: 20px;
+  } */
+  .heart-particle:nth-child(9) {
+    --x: -10px;
+    --y: -30px;
+  }
+  .heart-particle:nth-child(10) {
+    --x: 10px;
+    --y: -30px;
+  }
+  
