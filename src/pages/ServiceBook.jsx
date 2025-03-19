@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ACCOUNT_TYPE } from "../utils/constants";
 import { toast } from "react-hot-toast";
 import { fetchServiceDetails } from "../services/operations/serviceDetailsAPI";
+import { BookService } from "../services/operations/servicePayement";
 import { setService } from "../slices/serviceSlice";
 
 const ServiceBook = () => {
@@ -80,6 +81,11 @@ const ServiceBook = () => {
     }
 
     if (selectedSlot) {
+      if (token) {
+        console.log("slot - id debug :",selectedSlot.slotId )
+        BookService(token, selectedSlot.slotId, user, navigate, dispatch)
+        return
+      }
       try {
         setLoading(true);
         const payload = {

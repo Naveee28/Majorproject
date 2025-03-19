@@ -365,47 +365,62 @@ exports.updateServiceSlotProgress = async (req, res) => {
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-exports.bookService = async (req, res) => {
+// Exported booking logic as a standalone function to avoid multiple responses
+exports.bookServiceLogic = async (userId, serviceId, slotId) => {
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+  
+    // Check if the service exists
+    const service = await Service.findById(serviceId);
+    if (!service) {
+      throw new Error("Service not found");
+    }
+  
+    // Check if the slot exists and is available
+    const result = await Slot.findById(slotId);
+    if (!result) {
+      throw new Error("Slot not found");
+    }
+    if (result.slot.status !== "available") {
+      throw new Error("Slot not available");
+    }
+  
+    // Update slot status to booked and assign bookedBy
+    result.slot.status = "booked";
+    result.slot.progress = "Initiated";
+    result.slot.bookedBy = userId;
+    await result.save();
+  
+    // Add service to user's services list
+    user.services.push(serviceId);
+    await user.save();
+  
+    return { success: true, service }; // Return booking result without sending a response
+  };
+  
+///////////////////////////////////////////////////////////////////////////////////////
+  exports.bookService = async (req, res) => {
     try {
-      const { serviceId, slotId ,userId} = req.body;
- 
-      // Check if the user exists
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
+      const { serviceId, slotId, userId } = req.body;
   
-      // Check if the service exists
-      const service = await Service.findById(serviceId);
-      if (!service) {
-        return res.status(404).json({ success: false, message: "Service not found" });
-      }
+      // Core booking logic
+      const bookingResult = await bookServiceLogic(userId, serviceId, slotId);
   
-      // Check if the slot exists and is available
-      const result = await Slot.findById(slotId);
-      if (!result) {
-        return res.status(400).json({ success: false, message: "Slot not found" });
-      }
-      if (result.slot.status !== "available") {
-        return res.status(400).json({ success: false, message: "Slot not available" });
-      }
-  
-      // Update slot status to booked and assign bookedBy
-      result.slot.status = "booked";
-      result.slot.progress ="Initiated";
-      result.slot.bookedBy = userId;
-      await result.save();
-      
-      console.log("slot after update :",result);
-  
-      return res.status(200).json({ success: true, message: "Service booked successfully", service });
+      // Respond with the booking result
+      return res.status(200).json({
+        success: true,
+        message: "Service booked successfully",
+        service: bookingResult.service,
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, message: "Internal server error" });
+      return res.status(500).json({ success: false, message: "Internal server error" });
     }
   };
+  
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 

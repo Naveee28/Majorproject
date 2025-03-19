@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   selectedDate: new Date(),
   bookedSlot: null,
+  paymentLoading: false,
 };
 
 
@@ -17,6 +18,9 @@ const slotSlice = createSlice({
     setSelectedDate: (state, action) => {
       state.selectedDate = action.payload;
     },
+    setPaymentLoading: (state, action) => {
+      state.paymentLoading = action.payload
+    },
     resetSlotState: (state) => {
       state.slots = [];
       state.loading = false;
@@ -27,6 +31,6 @@ const slotSlice = createSlice({
   },
 });
 
-export const { setSelectedDate, resetSlotState } = slotSlice.actions;
+export const { setSelectedDate, resetSlotState,setPaymentLoading  } = slotSlice.actions;
 
 export default slotSlice.reducer;

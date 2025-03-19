@@ -10,7 +10,8 @@ const rentRoutes = require("./routes/Rent");
 const categoryRoutes = require("./routes/Category");
 const ratingRoutes = require("./routes/RatingAndReviews");
 const wishlistRoutes = require("./routes/wishlist");
-
+const paymentRoutes = require("./routes/payement");
+const chatbotRoutes = require("./routes/Chatbot");
 
 // Connecting to database
 const database = require("./config/database");
@@ -54,12 +55,13 @@ app.use(fileUpload({
 app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/service", serviceRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/rent", rentRoutes);
 app.use("/api/v1/rating", ratingRoutes);
 app.use("/api/v1/wishlist",wishlistRoutes);
-
+app.use("/api/v1/chatbot", chatbotRoutes);
 
 
 // Testing the server
