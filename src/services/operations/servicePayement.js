@@ -69,10 +69,10 @@ export async function BookService(
     if (!orderResponse.data.success) {
       throw new Error(orderResponse.data.message);
     }
-
+    
     // Set up Razorpay options
     const options = {
-      key: process.env.RAZORPAY_KEY,
+      key: "rzp_test_axDmHAhUL0SV19",
       currency: orderResponse.data.data.currency,
       amount: `${orderResponse.data.data.amount}`, // Razorpay requires amount in the smallest currency unit
       order_id: orderResponse.data.data.id, // Order ID from backend
