@@ -365,51 +365,64 @@ exports.updateRentItemSlotProgress = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Exported booking logic as a standalone function to avoid multiple responses
+exports.bookRentLogic = async (userId, rentItemId, slotId) => {
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new Error("User not found");
+    }
 
+    // Check if the rent item exists
+    const rentItem = await RentItem.findById(rentItemId);
+    if (!rentItem) {
+        throw new Error("RentItem not found");
+    }
+
+    // Check if the slot exists and is available
+    const result = await Slot.findById(slotId);
+    if (!result) {
+        throw new Error("Slot not found");
+    }
+    if (result.slot.status !== "available") {
+        throw new Error("Slot not available");
+    }
+
+    // Update slot status to booked and assign bookedBy
+    result.slot.status = "booked";
+    result.slot.progress = "Initiated";
+    result.slot.bookedBy = userId;
+    await result.save();
+  
+    console.log("rent Item id :",rentItemId);
+    // Add rent item to user's rent items list
+    user.rents.push(rentItemId);
+    await user.save();
+
+    return { success: true, rentItem }; // Return booking result without sending a response
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
 exports.bookRentItem = async (req, res) => {
     try {
-      const { rentItemId, slotId ,userId} = req.body;
+        const { rentItemId, slotId, userId } = req.body;
 
+        // Core booking logic
+        const bookingResult = await bookRentLogic(userId, rentItemId, slotId);
 
-  
-      // Check if the user exists
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
-  
-      // Check if the service exists
-      const rentItem = await RentItem.findById(rentItemId);
-      if (!rentItem) {
-        return res.status(404).json({ success: false, message: "RentItem not found" });
-      }
-  
-      // Check if the slot exists and is available
-      const result = await Slot.findById(slotId);
-      if (!result) {
-        return res.status(400).json({ success: false, message: "Slot not found" });
-      }
-      if (result.slot.status !== "available") {
-        return res.status(400).json({ success: false, message: "Slot not available" });
-      }
-  
-      // Update slot status to booked and assign bookedBy
-      result.slot.status = "booked";
-      result.slot.progress ="Intiated";
-      result.slot.bookedBy = userId;
-      await result.save();
-      
-      console.log("slot after update :",result);
-  
-      return res.status(200).json({ success: true, message: "RentItem booked successfully", rentItem });
+        // Respond with the booking result
+        return res.status(200).json({
+            success: true,
+            message: "RentItem booked successfully",
+            rentItem: bookingResult.rentItem,
+        });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: "Internal server error" });
+        console.error(error);
+        return res.status(500).json({ success: false, message: error.message || "Internal server error" });
     }
-  };
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 // 9. Cancel service 
 exports.cancelRentItem = async (req, res) => {
     try {

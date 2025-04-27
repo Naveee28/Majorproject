@@ -31,6 +31,7 @@ import RentBook from "./pages/RentBook"
 
 // Components
 import Navbar from "./components/Common/Navbar"
+import Chatbot from "./components/Common/Chatbot";
 
 import OpenRoute from "./components/core/Auth/OpenRoute"
 import PrivateRoute from "./components/core/Auth/PrivateRoute"
@@ -87,7 +88,8 @@ export default function App() {
   return (
     <div className="flex min-h-screen w-screen flex-col bg-richblack-900 font-inter">
       <Navbar />
-
+      <Chatbot />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

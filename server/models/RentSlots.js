@@ -18,7 +18,7 @@ const rentItemSlotsSchema = new mongoose.Schema({
         },
         progress: {
             type: String,
-            enum: ["Not Intiated", "Intiated", "InProgress", "Completed", "Cancelled"],
+            enum: ["Not Intiated", "Initiated", "InProgress", "Completed", "Cancelled"],
             default: "Not Intiated"
         },
     }

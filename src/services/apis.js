@@ -10,6 +10,7 @@ export const endpoints = {
   LOGIN_API: BASE_URL + "/auth/login",
   RESETPASSTOKEN_API: BASE_URL + "/auth/resetPasswordToken",
   RESETPASSWORD_API: BASE_URL + "/auth/resetPassword",
+  CHATBOT_QUERY_API: BASE_URL + "/chatbot/query",
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,11 +19,18 @@ export const endpoints = {
 export const profileEndpoints = {
   GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
   GET_DASHBOARD_SERVICE_DATA: BASE_URL + "/profile/providerDashboardServiceData",
-  GET_DASHBOARD_RENTITEMS_DATA: BASE_URL + "/profile/providerDashboardRentItemData"
+  GET_DASHBOARD_RENTITEMS_DATA: BASE_URL + "/profile/providerDashboardRentItemData",
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//PAYMENT ENDPOINTS
+export const paymentEndpoints = {
+  PAYMENT_API: BASE_URL + "/payment/capturePayment",
+  VERIFY_API: BASE_URL + "/payment/verifyPayment",
+  SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
+}
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // CATAGORIES API
 export const categories = {
   FETCH_CATEGORIES_API: BASE_URL + "/category/getAllCategories",

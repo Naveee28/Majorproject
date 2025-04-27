@@ -14,6 +14,8 @@
     "copy-to-clipboard": "^3.3.3",
     "elasticsearch": "^16.7.3",
     "express-fileupload": "^1.5.0",
+    "framer-motion": "^12.5.0",
+    "razorpay": "^2.9.6",
     "react": "^18.2.0",
     "react-calendar": "^5.0.0",
     "react-chartjs-2": "^5.2.0",
@@ -72,5 +74,9 @@
     "prettier-plugin-tailwindcss": "^0.3.0",
     "source-map-loader": "^5.0.0",
     "tailwindcss": "^3.4.3"
-  }
+  },
+  "main": "prettier.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

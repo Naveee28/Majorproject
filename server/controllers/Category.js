@@ -1,13 +1,12 @@
 const Category = require("../models/Category");
 const User = require("../models/User");
-const Service = require("../models/service");
-const Rent = require("../models/rent");
 const mongoose = require("mongoose");
 
 // Create a new category
 exports.createCategory = async (req, res) => {
   try {
     let { name, description , status } = req.body;
+    const adminId = req.user.id;
     if (!name) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
@@ -18,7 +17,8 @@ exports.createCategory = async (req, res) => {
     const categoryDetails = await Category.create({
       name: name,
       description: description,
-      status:status,
+      status: status || "Draft", // Default to "Draft" if status is not provided
+      admin: adminId,
       services:[],
       product:[],
       rent:[]
@@ -84,7 +84,7 @@ exports.updateCategory = async (req, res) => {
 // Get all categories
 exports.getAllCategories = async (req, res) => {
   try {
-    const allCategories = await Category.find();
+    const allCategories = await Category.find().populate("admin", "firstName lastName email");;
     res.status(200).json({
       success: true,
       data: allCategories,
